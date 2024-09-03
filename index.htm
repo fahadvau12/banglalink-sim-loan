@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Banglalink SIM Loan Checker</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        input, button { padding: 10px; margin-top: 10px; }
+    </style>
+</head>
+<body>
+    <h1>Banglalink SIM Loan Checker</h1>
+    <input type="text" id="phoneNumber" placeholder="আপনার ফোন নম্বর লিখুন" />
+    <button onclick="checkLoan()">লোন চেক করুন</button>
+    <div id="result"></div>
+
+    <script>
+        async function checkLoan() {
+            const phoneNumber = document.getElementById('phoneNumber').value;
+            const resultDiv = document.getElementById('result');
+
+            if (!phoneNumber) {
+                resultDiv.innerHTML = 'দয়া করে ফোন নম্বর লিখুন।';
+                return;
+            }
+
+            try {
+                const response = await fetch(https://myblapi.banglalink.net/api/v1/emergency-balance/${phoneNumber});
+                const data = await response.json();
+                
+                if (data && data.balance) {
+                    resultDiv.innerHTML = আপনার লোন ব্যালেন্স: ${data.balance} টাকা;
+                } else {
+                    resultDiv.innerHTML = 'লোন তথ্য পাওয়া যায়নি।';
+                }
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                resultDiv.innerHTML = 'একটি ত্রুটি ঘটেছে। দয়া করে আবার চেষ্টা করুন।';
+            }
+        }
+    </script>
+</body>
+</html>
